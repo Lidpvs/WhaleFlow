@@ -9,7 +9,6 @@
   <img src="https://img.shields.io/badge/ML-scikit--learn-orange.svg"/>
   <img src="https://img.shields.io/badge/Data-pandas-lightgrey.svg"/>
   <img src="https://img.shields.io/badge/App-Streamlit-red.svg"/>
-  <img src="https://img.shields.io/badge/License-MIT-green.svg"/>
 </p>
 
 <p align="center">
