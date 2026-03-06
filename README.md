@@ -1,220 +1,215 @@
-# WhaleFlow — BTC Whale Activity vs Price (ML + Strategy)
+# WhaleFlow 🐋📈
+### BTC whale spikes vs price movement (Data Science / ML project)
 
-Simple research project exploring how **Bitcoin whale activity** affects short-term price movement.
+WhaleFlow explores whether **large Bitcoin whale transactions** correlate with **future BTC price movements**.
 
-The project combines:
+The project aggregates on-chain whale activity, merges it with market data, and evaluates whether **price tends to move after whale spikes** across multiple time horizons.
 
-- On-chain whale transaction aggregation  
-- Market data (Binance OHLCV)  
-- Statistical impact analysis  
-- Machine Learning (Logistic Regression)  
-- Simple trading strategy backtest  
-- Streamlit visualization  
+The repository includes:
 
----
-
-## Idea
-
-Large Bitcoin transfers ("whales") often precede market moves.  
-This project tests:
-
-> Does whale activity statistically precede price growth?
-
-And:
-
-> Can we build a simple predictive model and trading signal from it?
+- on-chain whale transaction aggregation
+- time-series feature engineering
+- statistical impact analysis
+- a machine learning baseline model
+- an interactive **Streamlit dashboard**
 
 ---
 
-## Data
+# Dashboard
 
-Sources:
+## Quick stats
 
-- **Binance OHLCV** — BTCUSDT 1h candles  
-- **Bitcoin blockchain** — whale transactions ≥ 100 BTC  
+![Quick stats](assets/quick_stats.png)
 
-Aggregated into hourly features.
-
----
-
-## Features
-
-Main engineered features:
-
-- `whale_tx_count` — number of whale transactions per hour  
-- `whale_sum_btc` — total BTC moved by whales  
-- `whale_max_btc` — largest whale transfer  
-- `whale_mean_btc` — average whale size  
-- `whale_sum_3h` — rolling whale activity (3h window)  
-- `spike_flag` — whale activity spike (top 10%)  
-- `spike_cluster` — cluster of recent spikes  
-- `vol_24h` — rolling volatility  
-- `trend_regime` — market trend state  
-- `vol_regime` — volatility regime  
+Shows dataset size, spike count, and ML training summary.
 
 ---
 
-## Project Structure
+## Horizon comparison
 
-src/
-├── data_price.py # Download BTC/SOL price data
-├── features_whales_hourly.py # Build whale features
-├── build_dataset_btc.py # Merge price + whale data
-├── impact_check.py # Statistical spike impact test
-├── train_ml_btc.py # ML model training + evaluation
-├── app.py # Streamlit dashboard
-├── utils_io.py
-└── config.py
+![Horizon comparison](assets/horizon_comparison.png)
 
-data/
-├── raw/
-└── processed/
+Comparison of strategy performance across multiple horizons (1–12 hours).
 
+Metrics shown:
+
+- number of trades
+- average trade return
+- hitrate
+- cumulative strategy return
+- mean returns after whale spikes vs normal hours
 
 ---
 
-## Installation
+## Whale spikes vs BTC price
 
-```bash
-pip install -r requirements.txt
+![Price spikes](assets/price_spikes.png)
+
+BTC price chart with whale spike markers.
+
+Spike hours represent the **largest whale transaction flows**.
+
+---
+
+## Strategy performance vs horizon
+
+![Strategy](assets/strategy_vs_horizon.png)
+
+Shows how strategy performance changes depending on the prediction horizon.
+
+---
+
+## ML feature importance
+
+![ML coefficients](assets/top_coef.png)
+
+Logistic Regression coefficients highlighting the most influential features.
+
+---
+
+# Project Pipeline
+
+### 1️⃣ Whale transaction aggregation
+Large Bitcoin transactions are extracted and aggregated hourly.
+
+Features include:
+
+- whale_tx_count
+- whale_sum_btc
+- whale_max_btc
+- whale_mean_btc
+
+A **spike hour** is defined as the **top 10% of whale transaction flow**.
+
+---
+
+### 2️⃣ Feature engineering
+
+Additional features:
+
+- whale_sum_3h (3-hour rolling whale flow)
+- spike_cluster (recent spike activity)
+- volatility regime
+- trend regime
+
+---
+
+### 3️⃣ Impact analysis
+
+Statistical tests compare:
+
+future returns after spike hours
+vs
+future returns after normal hours
 
 
-Main dependencies:
+Bootstrap resampling is used to estimate **95% confidence intervals**.
 
-pandas
+---
 
-numpy
+### 4️⃣ Machine learning baseline
 
-scikit-learn
+Model used:
 
-matplotlib
+Logistic Regression
 
-streamlit
-
-pyarrow
-
-Pipeline
-
-Run step by step:
-
-python -m src.data_price
-python -m src.features_whales_hourly
-python -m src.build_dataset_btc
-python -m src.impact_check
-python -m src.train_ml_btc
-
-
-Run dashboard:
-
-streamlit run src/app.py
-
-Strategy
-
-Simple rule:
-
-If whale spike → open long → hold N hours
-
-
-Tested horizons: 1–12 hours
-
-Results (example)
-
-Best region observed:
-
-Horizon	Avg Trade	Hitrate	Sum Return
-4h	~0.59%	62%	~4.7%
-5h	~0.58%	62%	~4.6%
-7h	~0.55%	75%	~4.4%
-
-Statistical test:
-
-Mean return after spikes > non-spikes
-
-Confidence intervals often positive
-
-Indicates weak but real signal
-
-Machine Learning
-
-Model: Logistic Regression
 
 Target:
 
-Will price be higher after N hours?
+Will BTC price increase within N hours?
 
 
-Evaluation:
+Training setup:
 
-TimeSeriesSplit (5 folds)
+- TimeSeriesSplit cross-validation
+- feature scaling
+- class balancing
 
-Accuracy ≈ 0.45–0.52
+Evaluation metrics:
 
-F1 ≈ 0.42–0.52
+- Accuracy
+- F1 score
 
-Weak predictive signal (expected for markets)
+---
 
-Most important features typically:
+# Example findings
 
-whale_sum_3h
+Some horizons show stronger effects than others.
 
-volatility
+Short-term horizons around **4–7 hours** showed the most promising signal in this dataset.
 
-whale_tx_count
+However, the project is intended as an **exploratory research prototype**, not a trading system.
 
-spike_flag
+---
 
-Visualization
+# Tech Stack
 
-Streamlit app shows:
+Python
 
-Price chart with whale spikes
+Libraries:
 
-Top whale events
+- pandas
+- numpy
+- scikit-learn
+- matplotlib
+- streamlit
+- pyarrow
 
-Strategy performance
+---
 
-Horizon comparison
+# Project Structure
+WhaleFlow
+│
+├── src
+│ ├── app.py
+│ ├── data_price.py
+│ ├── features_whales_hourly.py
+│ ├── build_dataset_btc.py
+│ ├── impact_check.py
+│ ├── train_ml_btc.py
+│
+├── assets
+│ ├── quick_stats.png
+│ ├── price_spikes.png
+│ ├── horizon_comparison.png
+│ ├── strategy_vs_horizon.png
+│ ├── top_coef.png
+│
+├── data
+│ ├── raw
+│ ├── processed
+│
+├── requirements.txt
+└── README.md
 
-ML metrics
 
-Feature importance
+---
 
-Interpretation
+# Running the project
 
-The project shows:
+Create virtual environment
 
-Whale activity correlates with short-term market moves
+python -m venv .venv
 
-Strongest effect appears within 4–7 hours
+Activate
 
-Signal is weak but non-random
+.venv\Scripts\activate
 
-ML alone is insufficient, but helps explain behavior
+Install dependencies
 
-This is a research / exploratory project, not a trading system.
+pip install -r requirements.txt
 
-Future Improvements
+Run dashboard
 
-Detect whale direction (exchange inflow/outflow)
+streamlit run app.py
 
-Add orderbook / funding rate
 
-Use XGBoost / RandomForest
+---
 
-Add probabilistic trading filter (ML + spike)
+# Disclaimer
 
-Increase dataset size
+This project is for **research and educational purposes only**.
 
-Walk-forward backtest
+It demonstrates a **data science workflow combining blockchain data, statistical analysis, and machine learning**.
 
-Real-time pipeline
-
-Author
-
-Lidiia Petrovska
-AI / Data Science / Blockchain
-
-Disclaimer
-
-This project is for research and educational purposes only.
-Not financial advice.
+It is **not financial advice** and should not be used for trading decisions.
