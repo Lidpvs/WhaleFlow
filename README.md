@@ -1,3 +1,21 @@
+<h1 align="center">WhaleFlow 🐋📈</h1>
+<p align="center">
+  <b>BTC whale activity vs price movement</b><br/>
+  On-chain aggregation • Time-series features • ML baseline • Streamlit dashboard
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.10%2B-blue.svg"/>
+  <img src="https://img.shields.io/badge/ML-scikit--learn-orange.svg"/>
+  <img src="https://img.shields.io/badge/Data-pandas-lightgrey.svg"/>
+  <img src="https://img.shields.io/badge/App-Streamlit-red.svg"/>
+  <img src="https://img.shields.io/badge/License-MIT-green.svg"/>
+</p>
+
+<p align="center">
+  <img src="assets/horizon_comparison.png" alt="WhaleFlow dashboard preview" width="900"/>
+</p>
+
 # WhaleFlow 🐋📈
 ### BTC whale spikes vs price movement (Data Science / ML project)
 
@@ -159,27 +177,49 @@ Libraries:
 
 # Project Structure
 WhaleFlow
+
 │
+
 ├── src
+
 │ ├── app.py
+
 │ ├── data_price.py
+
 │ ├── features_whales_hourly.py
+
 │ ├── build_dataset_btc.py
+
 │ ├── impact_check.py
+
 │ ├── train_ml_btc.py
+
 │
+
 ├── assets
+
 │ ├── quick_stats.png
+
 │ ├── price_spikes.png
+
 │ ├── horizon_comparison.png
+
 │ ├── strategy_vs_horizon.png
+
 │ ├── top_coef.png
+
 │
+
 ├── data
+
 │ ├── raw
+
 │ ├── processed
+
 │
+
 ├── requirements.txt
+
 └── README.md
 
 
@@ -187,19 +227,19 @@ WhaleFlow
 
 # Running the project
 
-Create virtual environment
+- Create virtual environment
 
 python -m venv .venv
 
-Activate
+- Activate
 
 .venv\Scripts\activate
 
-Install dependencies
+- Install dependencies
 
 pip install -r requirements.txt
 
-Run dashboard
+- Run dashboard
 
 streamlit run app.py
 
